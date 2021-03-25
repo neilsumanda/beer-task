@@ -1,5 +1,5 @@
 import {createContext, useState} from 'react';
-
+import axios from 'axios'
 
 
  const initialState = {
@@ -17,8 +17,22 @@ import {createContext, useState} from 'react';
      }
 
      const setSearchField = (val) => {
-         const beerSearch = state.beer.filter(b => b.name.toLowerCase().includes(val))
-         setState({...state, search: beerSearch})
+        const url = `https://api.punkapi.com/v2/beers?beer_name=${val}`
+       
+
+        axios.get(url)
+                .then((response)=>{
+                    
+                    // setBeerList(response.data);
+                    //setState({...state, search: response.data})
+                    setState({beer: response.data})
+                }, 
+                (error)=>{}
+        )
+       
+
+         //const beerSearch = state.beer.filter(b => b.name.toLowerCase().includes(val))
+         //setState({...state, search: beerSearch})
         
      }
 
@@ -27,9 +41,10 @@ import {createContext, useState} from 'react';
          setState({...state, beer: val})
      }
 
+   
      return <GlobalContext.Provider
         value={{
-            beerList: state.search && state.search || state.beer,
+            beerList: state.beer,
             setBeerList,
             setSearchField,
             setRandom

@@ -6,9 +6,48 @@ import { Random } from './random';
 import { Search } from './search';
 
 
-export const Main = () => {
+export const Main = ({match}) => {
     const {beerList, setBeerList} = useContext(GlobalContext)
     // const [beerList, setBeerList] =useState([]);
+    const [page, setPage] = useState(1);
+
+    const handlePrevClick  = () => {
+        
+        console.log("prev..", page)
+        if(page > 1) setPage(page - 1);
+        console.log("prev data..", page)
+        
+        
+            const per_page = 25;
+            const url = `https://api.punkapi.com/v2/beers?page=${page}&per_page=${per_page}`
+
+            axios.get(url)
+                .then((response)=>{
+                   
+                    setBeerList(response.data);
+                    
+                }, 
+                (error)=>{})
+            
+       
+            
+    }
+
+    const handleNextClick = () => {
+        
+        setPage(page + 1)
+        const per_page = 25;
+        const url = `https://api.punkapi.com/v2/beers?page=${page}&per_page=${per_page}`
+        console.log("next data..", page)
+
+        axios.get(url)
+                .then((response)=>{
+                    
+                    setBeerList(response.data);
+                }, 
+                (error)=>{})
+       
+    }
 
     useEffect(() => {
 
@@ -24,6 +63,8 @@ export const Main = () => {
     }, [])
 
     return(<div>
+ 
+
         <div className="" style={{padding: `10px 40px`, position:'absolute'}}>
             
             <Search />
@@ -34,7 +75,7 @@ export const Main = () => {
             <Random />
             
         </div>
-        
+
         <ul>
 
             {beerList.map((beer,idx) => 
@@ -54,9 +95,8 @@ export const Main = () => {
                     </div>
 
                     <div className="arrow arrow-main" >
-                        
-                            <Link className="link" to={`/detail/${beer.id}`} >&#8594;</Link>
-                        </div>    
+                        <Link className="link" to={`/detail/${beer.id}`} >&#8594;</Link>
+                    </div>    
                     
                     <br />
                     
@@ -68,6 +108,10 @@ export const Main = () => {
  
                    
         </ul>
- 
+        
+        <input type="button" value="Prev" onClick={() => handlePrevClick()}/>
+        <input type="button" value="Next" onClick={() => handleNextClick()}/>
+
+       
     </div>)
 }
