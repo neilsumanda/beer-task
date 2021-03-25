@@ -22,11 +22,17 @@ import {createContext, useState} from 'react';
         
      }
 
+     const setRandom = (val) => {
+         console.log("setRandom..", val)
+         setState({...state, beer: val})
+     }
+
      return <GlobalContext.Provider
         value={{
             beerList: state.search && state.search || state.beer,
             setBeerList,
-            setSearchField
+            setSearchField,
+            setRandom
         }}
      >
          {children}

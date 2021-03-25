@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, {useState, useEffect, useContext} from 'react'
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../contexts/GlobalContext';
+import { Random } from './random';
 import { Search } from './search';
 
 
@@ -30,7 +31,8 @@ export const Main = () => {
             
         </div>
         <div style={{'paddingLeft': '90%'}}>
-            <input type="button" value="Random"/> <br />
+            <Random />
+            
         </div>
         
         <ul>
